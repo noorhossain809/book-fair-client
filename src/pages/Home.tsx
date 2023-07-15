@@ -1,10 +1,10 @@
 import BookCard from "../components/BookCard";
+import Books from "./Books";
 
 const Home = () => {
   return (
     <div>
-      <h1>Home</h1>
-      <BookCard />
+      <Books />
     </div>
   );
 };

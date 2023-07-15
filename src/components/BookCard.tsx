@@ -1,16 +1,21 @@
-import bookimg from "";
+import bookimg from "../assets/Quran_Theke_Newa_JIboner_Pat-Arif_Azad-d0906-279506.jpg";
+import { IProduct } from "../types/globalTypes";
 
-const BookCard = () => {
+interface IProps {
+  book: IProduct;
+}
+
+const BookCard = ({ book }: IProps) => {
   return (
     <div>
-      <div className="rounded-2xl h-[480px] flex flex-col items-start justify-between p-5 overflow-hidden shadow-md border border-gray-100 hover:shadow-2xl hover:scale-[102%] transition-all gap-2">
-        <img className="w-full" src="" alt="product" />
-        <h1 className="text-xl font-semibold">
-          কুরআন থেকে নেওয়া জীবনের পাঠ (পেপারব্যাক)
-        </h1>
-
+      <div className="rounded-2xl h-auto flex flex-col items-start justify-between p-5 overflow-hidden shadow-md border border-gray-100 hover:shadow-2xl hover:scale-[102%] transition-all gap-2">
+        <div className="w-max">
+          <img className="w-full h-72 px-5" src={bookimg} alt="product" />
+        </div>
+        <h1 className="text-xl font-semibold">{book?.title}</h1>
         <p>Rating: *****</p>
-        <p className="text-sm">Availability: In stock</p>
+        <p className="text-sm">{book?.author}</p>
+        <p className="text-sm">{book?.genre}</p>
         <p className="text-sm">Price: TK. 259</p>
         <button
           type="button"
