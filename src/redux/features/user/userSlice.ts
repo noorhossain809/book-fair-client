@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async({email, password}: ICredential) => {
    
-    const request = await axios.post(`${url}/login`, {email, password})
+    const request = await axios.post(`${baseUrl}/login`, {email, password})
     const response = await request.data
     // localStorage.setItem('user', JSON.stringify(response))
     return response
