@@ -1,15 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useState, useEffect } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { LoginRequest, useLoginMutation } from "../redux/features/user/auth";
-import { toast } from "react-hot-toast";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { loginUser } from "../redux/features/user/userSlice";
-import ToastContent from "../components/ui/Toast";
+import { useCreateUserMutation } from "../redux/features/user/userApi";
+import { toast } from "react-hot-toast/headless";
 
 type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -18,42 +11,29 @@ interface SignupFormInputs {
   password: string;
 }
 
-const Login = ({ className, ...props }: UserAuthFormProps) => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const token = window.localStorage.getItem("token");
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
+const SignUp = ({ className, ...props }: UserAuthFormProps) => {
+  const [inputValue, setInputValue] = useState<string>("");
+  const [createUser, { isLoading, isError, isSuccess }] =
+    useCreateUserMutation();
+  console.log("isLoading", isLoading);
+  console.log("isError", isError);
+  console.log("isSuccess", isSuccess);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupFormInputs>();
 
-  const { isLoading, error, isError } = useAppSelector((state) => state.auth);
-
-  const onSubmit = () => {
-    const useCredential = {
-      email,
-      password,
-    };
-    dispatch(loginUser(useCredential)).then((result) => {
-      console.log("login user", result);
-      if (result.payload) {
-        toast.success((t) => <ToastContent message={result.payload.message} />);
-        setEmail("");
-        setPassword("");
-      }
-    });
+  const onSubmit = (data: SignupFormInputs) => {
+    console.log("sign up", data);
+    void createUser(data);
+    console.log("", data);
+    toast.success("User created successfully");
   };
 
-  useEffect(() => {
-    if (token) {
-      navigate("/");
-    }
-  }, [token]);
+  const handleOnChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(event.target.value);
+  };
 
   return (
     <div>
@@ -67,10 +47,14 @@ const Login = ({ className, ...props }: UserAuthFormProps) => {
                 alt="Your Company"
               />
               <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Login in to your account
+                SignUp in to your account
               </h2>
             </div>
-            <form className="space-y-6 mt-6" onSubmit={handleSubmit(onSubmit)}>
+            <form
+              className="space-y-6 mt-6"
+              action="#"
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <div>
                 <label
                   htmlFor="email"
@@ -87,9 +71,7 @@ const Login = ({ className, ...props }: UserAuthFormProps) => {
                     autoCapitalize="none"
                     autoComplete="email"
                     autoCorrect="off"
-                    value={email}
                     {...register("email", { required: "Email is required" })}
-                    onChange={(e) => setEmail(e.target.value)}
                   />
                   {errors.email && <p>{errors.email.message}</p>}
                 </div>
@@ -107,8 +89,6 @@ const Login = ({ className, ...props }: UserAuthFormProps) => {
                     {...register("password", {
                       required: "Password is required",
                     })}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
                   />
                   {errors.password && <p>{errors.password.message}</p>}
                 </div>
@@ -138,24 +118,7 @@ const Login = ({ className, ...props }: UserAuthFormProps) => {
                 </button>
               </div>
             </form>
-            {error && (
-              <div className="alert alert-error mt-2">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="stroke-current shrink-0 h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <span>{error}</span>
-              </div>
-            )}
+
             <p className="mt-10 text-center text-sm text-gray-500">
               Not a member?{" "}
               <a
@@ -172,4 +135,4 @@ const Login = ({ className, ...props }: UserAuthFormProps) => {
   );
 };
 
-export default Login;
+export default SignUp;

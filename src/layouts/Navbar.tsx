@@ -1,14 +1,14 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import jwtDecode, { JwtPayload } from "jwt-decode";
 
 const navigation = [
   { name: "Home", to: "/", current: true },
   { name: "Books", to: "books", current: false },
   { name: "About", to: "about", current: false },
   { name: "Contact", to: "contact", current: false },
-  { name: "Login", to: "login", current: false },
 ];
 
 function classNames(...classes: string[]) {
@@ -16,6 +16,22 @@ function classNames(...classes: string[]) {
 }
 
 const Navbar = () => {
+  const token: any = window.localStorage.getItem("token");
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [user, setUser] = useState(token);
+
+  console.log("user", user);
+
+  if (token) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    const decoded = jwtDecode(token); // Returns with the JwtPayload type
+    console.log("decoded", decoded);
+  }
+
+  const handleLogOut = () => {
+    window.localStorage.removeItem("token");
+    setUser("");
+  };
   return (
     <div>
       <div>
@@ -58,16 +74,52 @@ const Navbar = () => {
                   <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                     <div className="hidden sm:ml-6 sm:block">
                       <div className="flex space-x-4">
-                        {navigation.map((item) => (
-                          <Link
-                            key={item.name}
-                            to={item.to}
+                        <Link to="/">
+                          <button className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out">
+                            Home
+                          </button>
+                        </Link>
+
+                        {user && (
+                          <>
+                            <Link to="/books">
+                              <button className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out">
+                                Book
+                              </button>
+                            </Link>
+                            <Link to="addNewBook">
+                              <button className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out">
+                                Add New Book
+                              </button>
+                            </Link>
+                          </>
+                        )}
+
+                        <Link to="/about">
+                          <button className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out">
+                            About
+                          </button>
+                        </Link>
+                        <Link to="/contact">
+                          <button className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out">
+                            Contact
+                          </button>
+                        </Link>
+
+                        {user ? (
+                          <button
+                            onClick={handleLogOut}
                             className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out"
-                            aria-current={item.current ? "page" : undefined}
                           >
-                            {item.name}
+                            Sign out
+                          </button>
+                        ) : (
+                          <Link to="/login">
+                            <button className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out">
+                              Login
+                            </button>
                           </Link>
-                        ))}
+                        )}
                       </div>
                     </div>
 
@@ -92,47 +144,7 @@ const Navbar = () => {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                href="/"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                Your Profile
-                              </a>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                href="/"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                Settings
-                              </a>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <a
-                                href="/"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                Sign out
-                              </a>
-                            )}
-                          </Menu.Item>
-                        </Menu.Items>
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"></Menu.Items>
                       </Transition>
                     </Menu>
                   </div>
