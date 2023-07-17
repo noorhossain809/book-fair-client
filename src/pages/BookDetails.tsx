@@ -1,15 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetSingleBookQuery } from "../redux/features/book/bookApi";
 import bookimg from "../assets/Quran_Theke_Newa_JIboner_Pat-Arif_Azad-d0906-279506.jpg";
+import Modals from "../components/ui/Modals";
 
 const BookDetails = () => {
   const { id } = useParams();
 
-  const { data: book } = useGetSingleBookQuery(id);
+  const [open, setOpen] = useState(false);
+
+  function openModal() {
+    setOpen(true);
+  }
+
+  function closeModal() {
+    setOpen(false);
+  }
+
+  const { data: book } = useGetSingleBookQuery(id, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 30000,
+  });
   return (
     <div>
       <div className="flex max-w-7xl mx-auto items-center border-b border-gray-300 shadow-lg p-4">
@@ -36,6 +51,7 @@ const BookDetails = () => {
               </button>
             </Link>
             <button
+              onClick={openModal}
               type="button"
               className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
             >
@@ -44,6 +60,12 @@ const BookDetails = () => {
           </div>
         </div>
       </div>
+      <Modals
+        open={open}
+        openModal={openModal}
+        closeModal={closeModal}
+        id={id}
+      />
     </div>
   );
 };

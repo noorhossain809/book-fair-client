@@ -20,12 +20,12 @@ const Navbar = () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [user, setUser] = useState(token);
 
-  console.log("user", user);
+  // console.log("user", user);
 
   if (token) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const decoded = jwtDecode(token); // Returns with the JwtPayload type
-    console.log("decoded", decoded);
+    // console.log("decoded", decoded);
   }
 
   const handleLogOut = () => {

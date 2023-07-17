@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 import React from "react";
 
 interface IProps {
-  message: string;
+  message: string | unknown;
 }
 
 const ToastContent = ({ message }: IProps) => {
