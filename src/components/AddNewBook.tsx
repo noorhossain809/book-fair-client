@@ -33,7 +33,8 @@ const AddNewBook = () => {
     formState: { errors },
   } = useForm<BookFormInputs>();
 
-  const [addBook] = useAddBookMutation();
+  const [addBook, { error }] = useAddBookMutation();
+  console.log("error add", error);
 
   const onSubmit = () => {
     const bookData = {

@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useForm } from "react-hook-form";
-import { useCreateUserMutation } from "../redux/features/user/userApi";
 import { toast } from "react-hot-toast/headless";
+import { useCreateUserMutation } from "../redux/features/user/auth";
+import { useNavigate } from "react-router-dom";
 
 interface SignupFormInputs {
   email: string;
@@ -9,22 +11,19 @@ interface SignupFormInputs {
 }
 
 const SignUp = () => {
-  const [createUser, { isLoading, isError, isSuccess }] =
-    useCreateUserMutation();
-  console.log("isLoading", isLoading);
-  console.log("isError", isError);
-  console.log("isSuccess", isSuccess);
+  const [createUser] = useCreateUserMutation();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupFormInputs>();
 
+  const navigate = useNavigate();
+
   const onSubmit = (data: SignupFormInputs) => {
-    console.log("sign up", data);
-    void createUser(data);
-    console.log("", data);
+    createUser(data);
     toast.success("User created successfully");
+    navigate("/login");
   };
 
   return (

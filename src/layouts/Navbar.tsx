@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const navigation = [
   { name: "Home", to: "/", current: true },
@@ -17,11 +20,17 @@ function classNames(...classes: string[]) {
 const Navbar = () => {
   const token = window.localStorage.getItem("token");
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location?.state?.from?.pathname || "/";
+
   const [user, setUser] = useState(token);
 
   const handleLogOut = () => {
     window.localStorage.removeItem("token");
     setUser("");
+    navigate(from, { replace: true });
   };
   return (
     <div>
@@ -108,6 +117,13 @@ const Navbar = () => {
                           <Link to="/login">
                             <button className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out">
                               Login
+                            </button>
+                          </Link>
+                        )}
+                        {!user && (
+                          <Link to="/signup">
+                            <button className="text-white uppercase shadow-gray-300 hover:text-red-500 px-3 py-2 rounded-r-full text-base subpixel-antialiased font-semibold transition delay-150 duration-300 ease-in-out">
+                              SignUp
                             </button>
                           </Link>
                         )}
