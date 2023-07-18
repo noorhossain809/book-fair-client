@@ -1,16 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { useAddBookMutation } from "../redux/features/book/bookApi";
 import jwt_decode from "jwt-decode";
-import { AnyAsyncThunk } from "@reduxjs/toolkit/dist/matchers";
 import { toast } from "react-hot-toast";
-
-type BookFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 interface BookFormInputs {
   title: string;
@@ -20,9 +17,8 @@ interface BookFormInputs {
   user: string;
 }
 
-const AddNewBook = ({ className, ...props }: BookFormProps) => {
-  const dispatch = useAppDispatch();
-  const token = window.localStorage.getItem("token");
+const AddNewBook = () => {
+  const token: any = window.localStorage.getItem("token");
   const decoded: any = jwt_decode(token);
   const user = decoded.id;
 
@@ -37,8 +33,7 @@ const AddNewBook = ({ className, ...props }: BookFormProps) => {
     formState: { errors },
   } = useForm<BookFormInputs>();
 
-  const [addBook, { isLoading, isSuccess, isError, error }] =
-    useAddBookMutation();
+  const [addBook] = useAddBookMutation();
 
   const onSubmit = () => {
     const bookData = {

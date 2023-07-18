@@ -2,11 +2,12 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useGetSingleBookQuery } from "../redux/features/book/bookApi";
 import bookimg from "../assets/Quran_Theke_Newa_JIboner_Pat-Arif_Azad-d0906-279506.jpg";
 import Modals from "../components/ui/Modals";
+import BookReview from "./BookReview";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -25,6 +26,8 @@ const BookDetails = () => {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });
+
+  console.log(book);
   return (
     <div>
       <div className="flex max-w-7xl mx-auto items-center border-b border-gray-300 shadow-lg p-4">
@@ -66,6 +69,10 @@ const BookDetails = () => {
         closeModal={closeModal}
         id={id}
       />
+
+      <div>
+        <BookReview id={id} />
+      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -8,12 +9,12 @@ import BookCard from "../components/BookCard";
 import jwt_decode from "jwt-decode";
 
 const Books = () => {
-  const { data, isLoading, isError } = useGetBooksQuery(undefined, {
+  const { data } = useGetBooksQuery(undefined, {
     pollingInterval: 30000,
     refetchOnMountOrArgChange: true,
   });
 
-  const token = window.localStorage.getItem("token");
+  const token: any = window.localStorage.getItem("token");
   const decoded: any = jwt_decode(token);
   const user = decoded.id;
 

@@ -2,23 +2,20 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { LoginRequest, useLoginMutation } from "../redux/features/user/auth";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { loginUser } from "../redux/features/user/userSlice";
 import ToastContent from "../components/ui/Toast";
-
-type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 interface SignupFormInputs {
   email: string;
   password: string;
 }
 
-const Login = ({ className, ...props }: UserAuthFormProps) => {
+const Login = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const token = window.localStorage.getItem("token");
@@ -32,7 +29,7 @@ const Login = ({ className, ...props }: UserAuthFormProps) => {
     formState: { errors },
   } = useForm<SignupFormInputs>();
 
-  const { isLoading, error, isError } = useAppSelector((state) => state.auth);
+  const { error } = useAppSelector((state) => state.auth);
 
   const onSubmit = () => {
     const useCredential = {
@@ -42,7 +39,7 @@ const Login = ({ className, ...props }: UserAuthFormProps) => {
     dispatch(loginUser(useCredential)).then((result) => {
       console.log("login user", result);
       if (result.payload) {
-        toast.success((t) => <ToastContent message={result.payload.message} />);
+        toast.success(() => <ToastContent message={result.payload.message} />);
         setEmail("");
         setPassword("");
       }

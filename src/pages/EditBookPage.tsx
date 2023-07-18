@@ -4,44 +4,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
-  useAddBookMutation,
   useGetSingleBookQuery,
   useUpdateBookMutation,
 } from "../redux/features/book/bookApi";
 import jwt_decode from "jwt-decode";
-import { AnyAsyncThunk } from "@reduxjs/toolkit/dist/matchers";
 import { toast } from "react-hot-toast";
-
-import img1 from "../assets/yunus-tug-aLgOaY8iyJE-unsplash.jpg";
-import img2 from "../assets/yunus-tug-fypgaGyv6Bs-unsplash.jpg";
-
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// import "./style.css";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/scrollbar";
-import "swiper/css/pagination";
-
-import "swiper/css/effect-coverflow";
-
-// import required modules
-import {
-  Scrollbar,
-  Autoplay,
-  EffectCoverflow,
-  Pagination,
-} from "swiper/modules";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import ToastContent from "../components/ui/Toast";
-
-type BookFormProps = React.HTMLAttributes<HTMLDivElement>;
+import { useNavigate, useParams } from "react-router-dom";
 
 interface BookFormInputs {
   title: string;
@@ -51,7 +22,7 @@ interface BookFormInputs {
   user: string;
 }
 
-const EditBookPage = ({ className, ...props }: BookFormProps) => {
+const EditBookPage = () => {
   const {
     register,
     handleSubmit,
@@ -73,7 +44,7 @@ const EditBookPage = ({ className, ...props }: BookFormProps) => {
     book?.data?.publicationDate
   );
 
-  const [updateBook, { error, isError, isSuccess }] = useUpdateBookMutation();
+  const [updateBook, { error, isSuccess }] = useUpdateBookMutation();
   const navigate = useNavigate();
 
   const onSubmit = () => {

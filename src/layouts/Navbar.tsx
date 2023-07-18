@@ -1,8 +1,7 @@
 import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import jwtDecode, { JwtPayload } from "jwt-decode";
 
 const navigation = [
   { name: "Home", to: "/", current: true },
@@ -16,17 +15,9 @@ function classNames(...classes: string[]) {
 }
 
 const Navbar = () => {
-  const token: any = window.localStorage.getItem("token");
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const token = window.localStorage.getItem("token");
+
   const [user, setUser] = useState(token);
-
-  // console.log("user", user);
-
-  if (token) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    const decoded = jwtDecode(token); // Returns with the JwtPayload type
-    // console.log("decoded", decoded);
-  }
 
   const handleLogOut = () => {
     window.localStorage.removeItem("token");

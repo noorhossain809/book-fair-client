@@ -1,8 +1,5 @@
-import toast from "react-hot-toast";
-import React from "react";
-
 interface IProps {
-  message: string | unknown;
+  message: string;
 }
 
 const ToastContent = ({ message }: IProps) => {

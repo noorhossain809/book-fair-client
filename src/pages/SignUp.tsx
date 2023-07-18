@@ -1,18 +1,14 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCreateUserMutation } from "../redux/features/user/userApi";
 import { toast } from "react-hot-toast/headless";
-
-type UserAuthFormProps = React.HTMLAttributes<HTMLDivElement>;
 
 interface SignupFormInputs {
   email: string;
   password: string;
 }
 
-const SignUp = ({ className, ...props }: UserAuthFormProps) => {
-  const [inputValue, setInputValue] = useState<string>("");
+const SignUp = () => {
   const [createUser, { isLoading, isError, isSuccess }] =
     useCreateUserMutation();
   console.log("isLoading", isLoading);
@@ -29,10 +25,6 @@ const SignUp = ({ className, ...props }: UserAuthFormProps) => {
     void createUser(data);
     console.log("", data);
     toast.success("User created successfully");
-  };
-
-  const handleOnChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(event.target.value);
   };
 
   return (

@@ -5,12 +5,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { authApi } from "./auth";
-import { RootState } from "../../store";
-import axios, { AxiosResponse } from "axios";
-import { toast } from "react-hot-toast";
-import ToastContent from '../../../components/ui/Toast'
+import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 interface IUserState {
   user: {};
@@ -34,7 +30,7 @@ const initialState: IUserState = {
 };
 
 const baseUrl = 'https://book-fair-backend.vercel.app/api/v1/auth'
-const url = 'http://localhost:5000/api/v1/auth'
+// const url = 'http://localhost:5000/api/v1/auth'
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
@@ -93,7 +89,7 @@ const userSlice = createSlice({
         
       })
        // user fetch
-      .addCase(fetchUser.pending, (state, action) => {
+      .addCase(fetchUser.pending, (state) => {
         state.isLoading = true
       })
       .addCase(fetchUser.fulfilled, (state, action) => {

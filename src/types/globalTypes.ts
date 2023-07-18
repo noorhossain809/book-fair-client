@@ -4,5 +4,6 @@ export interface IProduct {
   author: string;
   genre: string;
   publicationDate: string;
-  user: string
+  user: string;
+  reviews?: string[]
 }
